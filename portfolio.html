@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Darshan Thummar — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #16161f;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #f0eff8;
+    --muted: #7f7e94;
+    --accent: #6c63ff;
+    --accent2: #a78bfa;
+    --teal: #2dd4bf;
+    --amber: #fbbf24;
+    --coral: #f87171;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  /* ── CANVAS BG ── */
+  #bg-canvas {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
+  
+  nav {
+    position: fixed !important; top: 0; left: 0; right: 0; z-index: 100 !important;
+    display: flex;
+    justify-content: center;
+    backdrop-filter: blur(18px);
+    background: rgba(10,10,15,0.7);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-container {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 5vw;
+  }
+  
+  section, footer { position: relative; z-index: 1; }
+  .nav-logo { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
+  .nav-logo span { color: var(--accent2); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  section { padding: 7rem 5vw; position: relative; }
+  .container { max-width: 1000px; margin: 0 auto; }
+  #hero { min-height: 100vh; display: flex; align-items: center; padding-top: 7rem; }
+  .hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 4rem; align-items: center; width: 100%; max-width: 1000px; margin: 0 auto; }
+  .hero-eyebrow { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent2); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.75rem; }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--accent2); }
+  h1 { font-family: var(--font-display); font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.04em; margin-bottom: 1.5rem; }
+  h1 .line-accent { color: var(--accent2); display: block; }
+  .hero-desc { color: var(--muted); font-size: 1.05rem; max-width: 520px; line-height: 1.8; margin-bottom: 2.5rem; }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.75rem; font-family: var(--font-body); font-size: 0.9rem; font-weight: 500; text-decoration: none; border-radius: 8px; transition: all 0.2s; cursor: pointer; border: none; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
+  .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border2); }
+  .btn-outline:hover { border-color: var(--accent2); color: var(--accent2); transform: translateY(-2px); }
+  .hero-avatar { width: 200px; height: 200px; border-radius: 24px; background: var(--bg3); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 4rem; font-weight: 800; color: var(--accent2); position: relative; flex-shrink: 0; }
+  .hero-stats { display: flex; gap: 2.5rem; margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid var(--border); }
+  .stat-num { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--text); }
+  .stat-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.04em; }
+  .section-header { margin-bottom: 3.5rem; }
+  .section-tag { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent2); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.75rem; }
+  .section-tag::before { content: ''; display: block; width: 24px; height: 1px; background: var(--accent2); }
+  h2 { font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; }
+  #about { background: rgba(17,17,24,0.82); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .about-text p { color: var(--muted); line-height: 1.9; margin-bottom: 1.2rem; }
+  .about-highlights { display: flex; flex-direction: column; gap: 1rem; }
+  .highlight-card { background: rgba(22,22,31,0.8); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem 1.5rem; display: flex; gap: 1rem; align-items: flex-start; transition: border-color 0.2s; backdrop-filter: blur(8px); }
+  .highlight-card:hover { border-color: var(--border2); }
+  .highlight-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+  .hi-purple { background: rgba(108,99,255,0.15); }
+  .hi-teal   { background: rgba(45,212,191,0.12); }
+  .hi-amber  { background: rgba(251,191,36,0.12); }
+  .hi-coral  { background: rgba(248,113,113,0.12); }
+  .highlight-title { font-size: 0.9rem; font-weight: 500; margin-bottom: 0.2rem; }
+  .highlight-sub   { font-size: 0.8rem; color: var(--muted); }
+  #skills { background: rgba(10,10,15,0.78); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+  .skill-group { background: rgba(22,22,31,0.8); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; transition: border-color 0.2s, transform 0.2s; backdrop-filter: blur(8px); }
+  .skill-group:hover { border-color: var(--border2); transform: translateY(-3px); }
+  .skill-group-title { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent2); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { font-size: 0.78rem; padding: 0.3rem 0.75rem; border-radius: 6px; font-weight: 500; }
+  .tag-purple { background: rgba(108,99,255,0.15); color: var(--accent2); border: 1px solid rgba(108,99,255,0.25); }
+  .tag-teal   { background: rgba(45,212,191,0.1);  color: var(--teal);    border: 1px solid rgba(45,212,191,0.2); }
+  .tag-amber  { background: rgba(251,191,36,0.1);  color: var(--amber);   border: 1px solid rgba(251,191,36,0.2); }
+  .tag-gray   { background: rgba(255,255,255,0.05); color: var(--muted);  border: 1px solid var(--border); }
+  .tag-coral  { background: rgba(248,113,113,0.1); color: var(--coral);   border: 1px solid rgba(248,113,113,0.2); }
+  #projects { background: rgba(17,17,24,0.82); }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+  .project-card { background: rgba(22,22,31,0.8); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem; transition: border-color 0.2s, transform 0.2s; display: flex; flex-direction: column; position: relative; overflow: hidden; backdrop-filter: blur(8px); }
+  .project-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); opacity: 0; transition: opacity 0.2s; }
+  .project-card:hover { border-color: var(--border2); transform: translateY(-4px); }
+  .project-card:hover::before { opacity: 1; }
+  .project-number { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); margin-bottom: 1rem; }
+  .project-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
+  .project-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; flex: 1; margin-bottom: 1.5rem; }
+  .project-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem; }
+  .project-links { display: flex; gap: 0.75rem; margin-top: auto; }
+  .project-link { font-size: 0.8rem; color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 0.3rem; transition: color 0.2s; }
+  .project-link:hover { color: var(--accent2); }
+  #achievements { background: rgba(10,10,15,0.78); }
+  .ach-list { display: flex; flex-direction: column; gap: 1rem; }
+  .ach-item { display: flex; gap: 1.25rem; align-items: flex-start; background: rgba(22,22,31,0.8); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem 1.5rem; transition: border-color 0.2s; backdrop-filter: blur(8px); }
+  .ach-item:hover { border-color: var(--border2); }
+  .ach-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+  .dot-gold   { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
+  .dot-purple { background: var(--accent2); box-shadow: 0 0 8px var(--accent2); }
+  .dot-teal   { background: var(--teal); box-shadow: 0 0 8px var(--teal); }
+  .ach-text { font-size: 0.92rem; color: var(--text); }
+  .ach-sub  { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+  #contact { background: rgba(17,17,24,0.82); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .contact-blurb { color: var(--muted); line-height: 1.9; margin-bottom: 2rem; }
+  .contact-links { display: flex; flex-direction: column; gap: 0.75rem; }
+  .contact-link { display: flex; align-items: center; gap: 0.75rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+  .contact-link:hover { color: var(--accent2); }
+  .contact-link-icon { width: 34px; height: 34px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.04em; }
+  .form-input, .form-textarea { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; color: var(--text); font-family: var(--font-body); font-size: 0.9rem; transition: border-color 0.2s; outline: none; resize: vertical; }
+  .form-input:focus, .form-textarea:focus { border-color: var(--accent); }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
+  footer { background: rgba(10,10,15,0.9); border-top: 1px solid var(--border); padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; color: var(--muted); }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+  .fade-up { animation: fadeUp 0.7s ease both; }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+  @media (max-width: 768px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-avatar { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<nav>
+  <div class="nav-container">
+    <a class="nav-logo" href="#hero">Darshan <span>Thummar</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#achievements">Achievements</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-grid" style="position:relative;z-index:1;">
+    <div>
+      <div class="hero-eyebrow fade-up">Computer Engineering Student</div>
+      <h1 class="fade-up delay-1">
+        Darshan
+        <span class="line-accent">Thummar.</span>
+      </h1>
+      <p class="hero-desc fade-up delay-2">
+        A passionate programmer from CHARUSAT, India. I build intelligent systems that bridge software and hardware — from IoT dashboards to full-stack web apps and machine learning pipelines.
+      </p>
+      <div class="hero-cta fade-up delay-3">
+        <a href="#projects" class="btn btn-primary">View Projects ↓</a>
+        <a href="https://github.com/ThummarDarshan" target="_blank" class="btn btn-outline">GitHub ↗</a>
+        <a href="https://www.linkedin.com/in/darshan-thummar-437496317/" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
+      </div>
+      <div class="hero-stats fade-up delay-4">
+        <div><div class="stat-num">16+</div><div class="stat-label">GitHub Repos</div></div>
+        <div><div class="stat-num">4th</div><div class="stat-label">Semester</div></div>
+        <div><div class="stat-num">Top 250</div><div class="stat-label">Odoo Hackathon</div></div>
+      </div>
+    </div>
+    <div class="hero-avatar fade-up delay-2" style="overflow:hidden;padding:0;">
+      <img src="my.jpeg" alt="Darshan Thummar" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">About</div>
+      <h2>Who I Am</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm Darshan Thummar, a Computer Engineering student at Charotar University of Science and Technology (CHARUSAT), Anand, Gujarat. Currently in my 4th semester, I'm focused on building real-world systems that solve real problems.</p>
+        <p>My interests span software development, IoT, and AI — I love the intersection of hardware and software. From building smart home automation with ESP32 to developing full-stack web apps with Django and React, I'm always experimenting.</p>
+        <p>I competed and was selected among the Top 250 teams out of 19,000+ participants in the Odoo Hackathon 2025, and won a college hackathon with a ₹5000 prize — experiences that sharpen my skills under pressure.</p>
+      </div>
+      <div class="about-highlights">
+        <div class="highlight-card"><div class="highlight-icon hi-purple">🎓</div><div><div class="highlight-title">CHARUSAT University</div><div class="highlight-sub">Computer Engineering · Anand, Gujarat</div></div></div>
+        <div class="highlight-card"><div class="highlight-icon hi-teal">🔧</div><div><div class="highlight-title">Software + Hardware</div><div class="highlight-sub">IoT, embedded systems, web development</div></div></div>
+        <div class="highlight-card"><div class="highlight-icon hi-amber">🏆</div><div><div class="highlight-title">Hackathon Competitor</div><div class="highlight-sub">Odoo 2025 · Top 250 of 19,000+ teams</div></div></div>
+        <div class="highlight-card"><div class="highlight-icon hi-coral">🤖</div><div><div class="highlight-title">ML Enthusiast</div><div class="highlight-sub">Deep learning, NLP, computer vision</div></div></div>
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<section id="skills">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Skills</div>
+      <h2>Tech Stack</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-group"><div class="skill-group-title">Languages</div><div class="skill-tags"><span class="tag tag-purple">Python</span><span class="tag tag-purple">C++</span><span class="tag tag-purple">C</span><span class="tag tag-purple">Java</span><span class="tag tag-purple">JavaScript</span><span class="tag tag-purple">SQL</span></div></div>
+      <div class="skill-group"><div class="skill-group-title">Frontend</div><div class="skill-tags"><span class="tag tag-teal">React.js</span><span class="tag tag-teal">HTML5</span><span class="tag tag-teal">CSS3</span></div></div>
+      <div class="skill-group"><div class="skill-group-title">Backend</div><div class="skill-tags"><span class="tag tag-amber">Django</span><span class="tag tag-amber">Django REST Framework</span><span class="tag tag-amber">Node.js</span></div></div>
+      <div class="skill-group"><div class="skill-group-title">Databases</div><div class="skill-tags"><span class="tag tag-coral">PostgreSQL</span><span class="tag tag-coral">MySQL</span><span class="tag tag-coral">Neon DB</span></div></div>
+      <div class="skill-group"><div class="skill-group-title">IoT &amp; Embedded</div><div class="skill-tags"><span class="tag tag-teal">Arduino</span><span class="tag tag-teal">ESP32</span><span class="tag tag-teal">Sensors</span><span class="tag tag-teal">Hardware</span></div></div>
+      <div class="skill-group"><div class="skill-group-title">Tools &amp; Concepts</div><div class="skill-tags"><span class="tag tag-gray">Git</span><span class="tag tag-gray">VS Code</span><span class="tag tag-gray">DSA</span><span class="tag tag-gray">Machine Learning</span><span class="tag tag-gray">REST APIs</span><span class="tag tag-gray">OOP</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Projects</div>
+      <h2>Things I've Built</h2>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-number">01 / Featured</div>
+        <div class="project-title">Hospital Management System</div>
+        <p class="project-desc">Full-stack clinic/hospital system with role-based access (Admin, Doctor, Patient), lab module, pharmacy, billing, and walk-in patient registration.</p>
+        <div class="project-stack"><span class="tag tag-amber">Django</span><span class="tag tag-teal">React.js</span><span class="tag tag-coral">PostgreSQL</span><span class="tag tag-gray">DRF</span></div>
+        <div class="project-links"><a href="https://github.com/ThummarDarshan/hms" target="_blank" class="project-link">GitHub ↗</a></div>
+      </div>
+      <div class="project-card">
+        <div class="project-number">02</div>
+        <div class="project-title">Smart Home Automation</div>
+        <p class="project-desc">IoT-based home automation system controlled via mobile and voice assistants. Built using ESP32 with real-time sensor feedback and remote control.</p>
+        <div class="project-stack"><span class="tag tag-teal">ESP32</span><span class="tag tag-teal">Arduino</span><span class="tag tag-gray">IoT</span><span class="tag tag-gray">C++</span></div>
+        <div class="project-links"><a href="https://github.com/ThummarDarshan/SMART_HOME_PROJECT" target="_blank" class="project-link">GitHub ↗</a></div>
+      </div>
+      <div class="project-card">
+        <div class="project-number">03</div>
+        <div class="project-title">Next.js AI Chatbot</div>
+        <p class="project-desc">An AI-powered chatbot built with Next.js, featuring natural language understanding and contextual conversational responses.</p>
+        <div class="project-stack"><span class="tag tag-purple">Python</span><span class="tag tag-amber">NLP</span><span class="tag tag-teal">Next.js</span><span class="tag tag-gray">AI/ML</span></div>
+        <div class="project-links"><a href="https://github.com/ThummarDarshan/nextjs-ai-chatbot" target="_blank" class="project-link">GitHub ↗</a></div>
+      </div>
+      <div class="project-card">
+        <div class="project-number">04</div>
+        <div class="project-title">Electronic Voting Machine</div>
+        <p class="project-desc">A digital voting machine in C++ simulating secure ballot casting, vote counting, and result display with basic access control measures.</p>
+        <div class="project-stack"><span class="tag tag-purple">C++</span><span class="tag tag-gray">OOP</span><span class="tag tag-gray">Systems</span></div>
+        <div class="project-links"><a href="https://github.com/ThummarDarshan/Electronic_Voting_Machine_Project" target="_blank" class="project-link">GitHub ↗</a></div>
+      </div>
+      <div class="project-card">
+        <div class="project-number">05</div>
+        <div class="project-title">DSA Problem Archive</div>
+        <p class="project-desc">A structured C++ collection of Data Structures and Algorithms solutions — arrays, trees, graphs, dynamic programming, and competitive programming patterns.</p>
+        <div class="project-stack"><span class="tag tag-purple">C++</span><span class="tag tag-gray">DSA</span><span class="tag tag-gray">Algorithms</span></div>
+        <div class="project-links"><a href="https://github.com/ThummarDarshan/DSA" target="_blank" class="project-link">GitHub ↗</a></div>
+      </div>
+      <div class="project-card">
+        <div class="project-number">06</div>
+        <div class="project-title">C Language Projects</div>
+        <p class="project-desc">A collection of foundational C language programs — data structures, file I/O, pointers, memory management, and algorithmic problem solving.</p>
+        <div class="project-stack"><span class="tag tag-purple">C</span><span class="tag tag-gray">Systems</span><span class="tag tag-gray">Algorithms</span></div>
+        <div class="project-links"><a href="https://github.com/ThummarDarshan/C-language" target="_blank" class="project-link">GitHub ↗</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="achievements">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Achievements</div>
+      <h2>Milestones</h2>
+    </div>
+    <div class="ach-list">
+      <div class="ach-item"><div class="ach-dot dot-gold"></div><div><div class="ach-text">Top 250 of 19,000+ teams — Odoo Hackathon 2025, Gandhinagar</div><div class="ach-sub">Selected among the top teams in one of India's largest hackathons</div></div></div>
+      <div class="ach-item"><div class="ach-dot dot-gold"></div><div><div class="ach-text">College Hackathon Winner — ₹5,000 cash prize</div><div class="ach-sub">Built an innovative tech solution recognized by faculty judges</div></div></div>
+      <div class="ach-item"><div class="ach-dot dot-teal"></div><div><div class="ach-text">Built and deployed IoT-based smart home automation system</div><div class="ach-sub">ESP32 + sensors + mobile control — fully functional end-to-end</div></div></div>
+      <div class="ach-item"><div class="ach-dot dot-purple"></div><div><div class="ach-text">Developed full-stack Hospital Management System</div><div class="ach-sub">Django + React.js + PostgreSQL with role-based access, lab module, and billing</div></div></div>
+      <div class="ach-item"><div class="ach-dot dot-teal"></div><div><div class="ach-text">Contributed to open-source projects in healthcare and education</div><div class="ach-sub">Actively building community-driven repositories on GitHub</div></div></div>
+      <div class="ach-item"><div class="ach-dot dot-purple"></div><div><div class="ach-text">Active competitive programmer on HackerRank and LeetCode</div><div class="ach-sub">Regular practice in data structures, algorithms, and problem-solving</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Contact</div>
+      <h2>Let's Connect</h2>
+    </div>
+    <div class="contact-grid">
+      <div>
+        <p class="contact-blurb">I'm always open to collaborating on interesting projects, discussing ideas, or just saying hi. Feel free to reach out through any of these channels.</p>
+        <div class="contact-links">
+          <a href="mailto:darshantce.059@gmail.com" class="contact-link"><div class="contact-link-icon">✉️</div>darshantce.059@gmail.com</a>
+          <a href="https://github.com/ThummarDarshan" target="_blank" class="contact-link"><div class="contact-link-icon" style="font-family:monospace;font-size:0.75rem;">GH</div>github.com/ThummarDarshan</a>
+          <a href="https://www.linkedin.com/in/darshan-thummar-437496317/" target="_blank" class="contact-link"><div class="contact-link-icon" style="font-weight:700;">in</div>linkedin.com/in/darshan-thummar</a>
+          <a href="#" class="contact-link"><div class="contact-link-icon">📍</div>Surat, Gujarat, India</a>
+        </div>
+      </div>
+      <div>
+        <div class="contact-form">
+          <div class="form-group"><label class="form-label">Name</label><input type="text" class="form-input" placeholder="Your name"></div>
+          <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" placeholder="your@email.com"></div>
+          <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" rows="4" placeholder="What's on your mind?"></textarea></div>
+          <button class="btn btn-primary" style="align-self:flex-start" onclick="alert('Thanks for reaching out! Connect this to a backend to make it live.')">Send Message →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Darshan Thummar</span>
+  <span>Built with HTML · CSS · JS</span>
+  <span>CHARUSAT, Gujarat 🇮🇳</span>
+</footer>
+
+<script>
+  /* ── SCROLL REVEAL ── */
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.skill-group, .project-card, .ach-item, .highlight-card').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = `opacity 0.5s ease ${i * 0.05}s, transform 0.5s ease ${i * 0.05}s, border-color 0.2s`;
+    revealObs.observe(el);
+  });
+
+  /* ══════════════════════════════════════════
+     ANIMATED CANVAS BACKGROUND
+     Layer 1 — Drifting radial-gradient orbs
+     Layer 2 — Diagonal streaking scan lines
+     Layer 3 — Floating particles + web
+  ══════════════════════════════════════════ */
+  const canvas = document.getElementById('bg-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, orbs, particles, scanLines;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function initOrbs() {
+    orbs = [
+      { x: W*0.15, y: H*0.20, r: 320, vx:  0.20, vy:  0.12, color: '108,99,255'  },
+      { x: W*0.82, y: H*0.65, r: 260, vx: -0.15, vy: -0.10, color: '45,212,191'  },
+      { x: W*0.50, y: H*0.45, r: 180, vx:  0.10, vy:  0.18, color: '167,139,250' },
+      { x: W*0.25, y: H*0.80, r: 150, vx: -0.13, vy: -0.08, color: '251,191,36'  },
+      { x: W*0.75, y: H*0.15, r: 130, vx:  0.11, vy:  0.09, color: '248,113,113' },
+    ];
+  }
+
+  function initParticles(n) {
+    particles = Array.from({ length: n }, () => ({
+      x:     Math.random() * W,
+      y:     Math.random() * H,
+      r:     Math.random() * 1.6 + 0.3,
+      vx:    (Math.random() - 0.5) * 0.40,
+      vy:    (Math.random() - 0.5) * 0.40,
+      alpha: Math.random() * 0.50 + 0.08,
+    }));
+  }
+
+  function initScanLines(n) {
+    scanLines = Array.from({ length: n }, () => ({
+      x:     Math.random() * W * 1.8,
+      y:    -Math.random() * H,
+      len:   Math.random() * 140 + 40,
+      speed: Math.random() * 0.7 + 0.2,
+      alpha: Math.random() * 0.07 + 0.02,
+      width: Math.random() * 1.2 + 0.3,
+    }));
+  }
+
+  function drawOrbs() {
+    orbs.forEach(o => {
+      if (o.x - o.r < 0 || o.x + o.r > W) o.vx *= -1;
+      if (o.y - o.r < 0 || o.y + o.r > H) o.vy *= -1;
+      o.x += o.vx;
+      o.y += o.vy;
+      const g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
+      g.addColorStop(0,    `rgba(${o.color},0.14)`);
+      g.addColorStop(0.45, `rgba(${o.color},0.06)`);
+      g.addColorStop(1,    `rgba(${o.color},0)`);
+      ctx.beginPath();
+      ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
+      ctx.fillStyle = g;
+      ctx.fill();
+    });
+  }
+
+  function drawScanLines() {
+    scanLines.forEach(l => {
+      l.x -= 0.35;
+      l.y += l.speed;
+      if (l.y > H + l.len) { l.y = -l.len; l.x = Math.random() * W * 1.8; }
+      ctx.beginPath();
+      ctx.moveTo(l.x, l.y);
+      ctx.lineTo(l.x - l.len * 0.45, l.y + l.len);
+      ctx.strokeStyle = `rgba(167,139,250,${l.alpha})`;
+      ctx.lineWidth   = l.width;
+      ctx.stroke();
+    });
+  }
+
+  function drawParticles() {
+    /* connection web */
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d  = Math.sqrt(dx*dx + dy*dy);
+        if (d < 110) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(108,99,255,${0.14 * (1 - d / 110)})`;
+          ctx.lineWidth   = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    /* dots */
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(167,139,250,${p.alpha})`;
+      ctx.fill();
+    });
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, W, H);
+    drawOrbs();
+    drawScanLines();
+    drawParticles();
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => { resize(); initOrbs(); });
+
+  resize();
+  initOrbs();
+  initParticles(110);
+  initScanLines(22);
+  animate();
+</script>
+</body>
+</html>
